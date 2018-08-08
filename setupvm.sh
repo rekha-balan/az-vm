@@ -4,7 +4,7 @@ echo
 echo
 echo 'Define the deployment variables used by the subsequent Azure CLI commands'
 echo
-echo 'resource_group=app-us-west2'
+echo 'resource_group=vm-us-west2'
 echo 'vnet_name=vnet-us-west2'
 echo 'location=westus2'
 echo 'vm_name=vm-02'
@@ -12,7 +12,7 @@ echo 'pip_name=vm-02-pip'
 echo 'nsg_name=vm-02-nsg'
 read -n1 -r -p 'Press any key...' key
 
-resource_group=app-us-west2
+resource_group=vm-us-west2
 vnet_name=vnet-us-west2
 location=westus2
 vm_name=vm-02
@@ -91,7 +91,7 @@ echo '  --generate-ssh-keys'
 read -n1 -r -p 'Press any key...' key
 
 az vm create \
-  -resource-group $resource_group \
+  --resource-group $resource_group \
   --name $vm_name \
   --nics $vm_name-nic1 \
   --os-disk-name $vm_name-boot.vhd \
@@ -136,3 +136,21 @@ echo 'az vm open-port --port 80 --resource-group $resource_group --name $vm_name
 read -n1 -r -p 'Press any key...' key
 
 az vm open-port --port 80 --resource-group $resource_group --name $vm_name --priority 901
+
+echo
+echo
+echo 'Show the resources in the Resource Group'
+echo
+echo 'az resource list --resource-group $resource_group'
+read -n1 -r -p 'Press any key...' key
+
+az resource list --resource-group $resource_group
+
+echo
+echo
+echo 'Show the resources in the Resource Group'
+echo
+echo 'az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv'
+read -n1 -r -p 'Press any key...' key
+
+az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv

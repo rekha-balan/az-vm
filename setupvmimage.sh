@@ -4,11 +4,11 @@ echo
 echo
 echo 'Define the deployment variables used by the subsequent Azure CLI commands'
 echo
-echo 'resource_group=app-us-west2'
+echo 'resource_group=vm-us-west2'
 echo 'location=westus2'
 read -n1 -r -p 'Press any key...' key
 
-resource_group=app-us-west2
+resource_group=vm-us-west2
 location=westus2
 vm_name=vm-01
 

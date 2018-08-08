@@ -5,7 +5,7 @@
 Define the deployment variables used by the subsequent Azure CLI commands'
 
 ```bash
-resource_group=app-us-west2
+resource_group=vm-us-west2
 location=westus2
 vm_name=vm-01
 ```
@@ -53,7 +53,7 @@ az vm create --resource-group $resource_group --name $vm_name --image OpenLogic:
 Define the deployment variables used by the subsequent Azure CLI commands
 
 ```bash
-resource_group=app-us-west2
+resource_group=vm-us-west2
 vnet_name=vnet-us-west2
 location=westus2
 vm_name=vm-02
