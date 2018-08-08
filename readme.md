@@ -1,6 +1,6 @@
 # Azure Virtual Machine Demo
 
-## Working with Azure Images
+## Identifying Azure Virtual Machine Images
 
 Define the deployment variables used by the subsequent Azure CLI commands'
 
@@ -48,7 +48,7 @@ az group create --name $resource_group --location $location
 az vm create --resource-group $resource_group --name $vm_name --image OpenLogic:CentOS:7.5:latest --generate-ssh-keys
 ```
 
-## Deploying a CentOS Virtual Machine with httpd
+## Deploying a CentOS Virtual Machine and Install httpd
 
 Define the deployment variables used by the subsequent Azure CLI commands
 
@@ -131,4 +131,75 @@ Open port 80 to allow http traffic to host
 
 ```bash
 az vm open-port --port 80 --resource-group $resource_group --name $vm_name --priority 901
+```
+
+## Resize the Virtual Machine
+
+Define the deployment variables used by the subsequent Azure CLI commands
+
+```bash
+resource_group=vm-us-west2
+vnet_name=vnet-us-west2
+location=westus2
+vm_name=vm-02
+```
+
+Show the current virtual machine size
+
+```bash
+az vm show --resource-group $resource_group --name $vm_name --query hardwareProfile.vmSize
+```
+
+Show the available sizes for the running virtual machine
+
+```bash
+az vm list-vm-resize-options --resource-group $resource_group --name $vm_name --query [].name
+```
+
+Resize the running virtual machine
+
+```bash
+az vm resize --resource-group $resource_group --name $vm_name --size Standard_DS2_v2
+```
+
+Deallocate the virtual machine
+
+```bash
+az vm deallocate --resource-group $resource_group --name $vm_name
+```
+
+Get the power state of the virtual machine
+
+```bash
+az vm get-instance-view --name $vm_name --resource-group $resource_group --query instanceView.statuses[1]
+```
+
+Show the available sizes for the deallocated virtual machine (All sizes for the region are now available)
+
+```bash
+az vm list-vm-resize-options --resource-group $resource_group --name $vm_name --query [].name
+```
+
+Resize the deallocated virtual machine
+
+```bash
+az vm resize --resource-group $resource_group --name $vm_name --size Standard_GS1
+```
+
+Start the virtual machine
+
+```bash
+az vm start --resource-group $resource_group --name $vm_name
+```
+
+Get the power state of the virtual machine
+
+```bash
+az vm get-instance-view --name $vm_name --resource-group $resource_group --query instanceView.statuses[1]
+```
+
+Show the NEW available sizes for the running virtual machine
+
+```bash
+az vm list-vm-resize-options --resource-group $resource_group --name $vm_name --query [].name
 ```
