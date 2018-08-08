@@ -73,7 +73,7 @@ echo
 echo
 echo 'Resize the deallocated virtual machine'
 echo
-echo 'az vm resize --resource-group $resource_group --name $vm_name --size Standard_DS2_v2'
+echo 'az vm resize --resource-group $resource_group --name $vm_name --size Standard_GS1'
 read -n1 -r -p 'Press any key...' key
 
 az vm resize --resource-group $resource_group --name $vm_name --size Standard_GS1
@@ -91,7 +91,7 @@ echo
 echo
 echo 'Get the power state of the virtual machine'
 echo
-echo 'az vm deallocate --resource-group $resource_group --name $vm_name'
+echo 'az vm get-instance-view --name $vm_name --resource-group $resource_group --query instanceView.statuses[1]'
 read -n1 -r -p 'Press any key...' key
 
 az vm get-instance-view --name $vm_name --resource-group $resource_group --query instanceView.statuses[1]
