@@ -203,3 +203,9 @@ Show the NEW available sizes for the running virtual machine
 ```bash
 az vm list-vm-resize-options --resource-group $resource_group --name $vm_name --query [].name
 ```
+
+## Remove the Resource Group
+
+```bash
+az group delete -n $resource_group
+```
