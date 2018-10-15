@@ -1,23 +1,23 @@
 #!/bin/bash
 
+resource_group=vm-us-west2
+vnet_name=vnet-us-west2
+location=westus2
+vm_name=vm-01
+pip_name=vm-01-pip
+nsg_name=vm-01-nsg
+
 echo
 echo
 echo 'Define the deployment variables used by the subsequent Azure CLI commands'
 echo
-echo 'resource_group=vm-us-west2'
-echo 'vnet_name=vnet-us-west2'
-echo 'location=westus2'
-echo 'vm_name=vm-02'
-echo 'pip_name=vm-02-pip'
-echo 'nsg_name=vm-02-nsg'
+echo "resource_group=$resource_group"
+echo "vnet_name=$vnet_name"
+echo "location=$location"
+echo "vm_name=$vm_name"
+echo "pip_name=$pip_name"
+echo "nsg_name=$nsg_name"
 read -n1 -r -p 'Press any key...' key
-
-resource_group=vm-us-west2
-vnet_name=vnet-us-west2
-location=westus2
-vm_name=vm-02
-pip_name=vm-02-pip
-nsg_name=vm-02-nsg
 
 echo
 echo
@@ -109,7 +109,7 @@ az vm open-port --port 22 --resource-group $resource_group --name $vm_name
 
 echo
 echo
-echo 'Use the Azure Virtual Machine Custom Script Extension to install httpd'
+echo 'Use an Azure Virtual Machine Custom Script Extension to install httpd'
 echo
 echo 'az vm extension set \'
 echo '  --publisher Microsoft.Azure.Extensions \'
@@ -127,6 +127,27 @@ az vm extension set \
   --vm-name $vm_name \
   --resource-group $resource_group \
   --settings '{"commandToExecute":"yum -y install httpd && systemctl start httpd && systemctl enable httpd"}'
+
+echo
+echo
+echo 'Use an Azure Virtual Machine Custom Script Extension to update the host firewall'
+echo
+echo 'az vm extension set \'
+echo '  --publisher Microsoft.Azure.Extensions \'
+echo '  --version 2.0 \'
+echo '  --name CustomScript \'
+echo '  --vm-name $vm_name \'
+echo '  --resource-group $resource_group \'
+echo '  --settings '{"commandToExecute":"firewall-cmd --zone=public --add-port=80/tcp --permanent && firewall-cmd --reload"}''
+read -n1 -r -p 'Press any key...' key
+
+az vm extension set \
+  --publisher Microsoft.Azure.Extensions \
+  --version 2.0 \
+  --name CustomScript \
+  --vm-name $vm_name \
+  --resource-group $resource_group \
+  --settings '{"commandToExecute":"firewall-cmd --zone=public --add-port=80/tcp --permanent && firewall-cmd --reload"}'
 
 echo
 echo
@@ -148,9 +169,26 @@ az resource list --resource-group $resource_group
 
 echo
 echo
-echo 'Show the resources in the Resource Group'
+echo 'Get the public IP address'
 echo
 echo 'az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv'
 read -n1 -r -p 'Press any key...' key
 
 az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv
+
+ip="$(az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv)"
+
+echo 
+echo
+echo "Browse to the public IP"
+echo
+echo "http://$ip/"
+read -n1 -r -p 'Press any key...' key
+
+echo
+echo
+echo "SSH to the public IP"
+echo
+echo "ssh $ip"
+echo "ssh <user>@$ip"
+read -n1 -r -p 'Press any key...' key

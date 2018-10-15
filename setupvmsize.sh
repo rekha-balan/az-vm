@@ -1,19 +1,19 @@
 #!/bin/bash
 
-echo
-echo
-echo 'Define the deployment variables used by the subsequent Azure CLI commands'
-echo
-echo 'resource_group=vm-us-west2'
-echo 'vnet_name=vnet-us-west2'
-echo 'location=westus2'
-echo 'vm_name=vm-02'
-read -n1 -r -p 'Press any key...' key
-
 resource_group=vm-us-west2
 vnet_name=vnet-us-west2
 location=westus2
 vm_name=vm-02
+
+echo
+echo
+echo 'Define the deployment variables used by the subsequent Azure CLI commands'
+echo
+echo "resource_group=$resource_group"
+echo "vnet_name=$vnet_name"
+echo "location=$location"
+echo "vm_name=$vm_name"
+read -n1 -r -p 'Press any key...' key
 
 echo
 echo

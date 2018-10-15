@@ -1,51 +1,61 @@
-# Azure Virtual Machine Demo
+# Azure Virtual Machine Deployment
 
-## Identifying Azure Virtual Machine Images
+## Deployment Quickstart
 
-Define the deployment variables used by the subsequent Azure CLI commands'
+git clone and update
 
 ```bash
-resource_group=vm-us-west2
-location=westus2
-vm_name=vm-01
+git clone https://github.com/bot6/az-vm
+
+git fetch --all
+
+git reset --hard origin/master
 ```
 
-Show all virtual machine images
+Allowing the deployment scripts to execute
 
 ```bash
-az vm image list
+cd az-vm
+
+chmod +x setupvm.sh
+
+chmod +x setupvmimage.sh
+
+chmod +x setupvmsize.sh
+
+chmod +x cleanup.sh
 ```
 
-Show all publishers
+Configure the Azure CLI (set output to table)
 
 ```bash
-az vm image list-publishers -l $location --query "[?starts_with(name, 'Open')]"
+az account list
+
+az account set --subscription 00000000-0000-0000-0000-000000000000
+
+az account show
+
+az configure
 ```
 
-Show all offers from OpenLogic
+Running the deployment
 
 ```bash
-az vm image list-offers --location $location -p OpenLogic
+./setupvm.sh
+
+./setupvmimage.sh
+
+./setupvmsize.sh
 ```
 
-Show all skus from OpenLogic based on CentOS'
+Delete the Azure deployment and git repo
 
 ```bash
-az vm image list-skus --location $location -p OpenLogic -f CentOS
-```
+./cleanup.sh
 
-Show all virtual machine sizes available in a region
+cd ..
 
-```bash
-az vm list-sizes --location $location
-```
-
-Create a virtual machine with a specific sku
-
-```bash
-az group create --name $resource_group --location $location
-
-az vm create --resource-group $resource_group --name $vm_name --image OpenLogic:CentOS:7.5:latest --generate-ssh-keys
+rm -rf az-vm
 ```
 
 ## Deploying a CentOS Virtual Machine and Install httpd
@@ -56,9 +66,9 @@ Define the deployment variables used by the subsequent Azure CLI commands
 resource_group=vm-us-west2
 vnet_name=vnet-us-west2
 location=westus2
-vm_name=vm-02
-pip_name=vm-02-pip
-nsg_name=vm-02-nsg
+vm_name=vm-01
+pip_name=vm-01-pip
+nsg_name=vm-01-nsg
 ```
 
 Create a resource group
@@ -115,7 +125,7 @@ Open port 22 to allow SSH traffic to host
 az vm open-port --port 22 --resource-group $resource_group --name $vm_name
 ```
 
-Use the Azure Virtual Machine Custom Script Extension to install httpd
+Use an Azure Virtual Machine Custom Script Extension to install httpd
 
 ```bash
 az vm extension set \
@@ -127,10 +137,92 @@ az vm extension set \
   --settings '{"commandToExecute":"yum -y install httpd && systemctl start httpd && systemctl enable httpd"}'
 ```
 
+Use an Azure Virtual Machine Custom Script Extension to update the host firewall
+
+```bash
+az vm extension set \
+  --publisher Microsoft.Azure.Extensions \
+  --version 2.0 \
+  --name CustomScript \
+  --vm-name $vm_name \
+  --resource-group $resource_group \
+  --settings '{"commandToExecute":"firewall-cmd --zone=public --add-port=80/tcp --permanent && firewall-cmd --reload"}'
+```
+
 Open port 80 to allow http traffic to host
 
 ```bash
 az vm open-port --port 80 --resource-group $resource_group --name $vm_name --priority 901
+```
+
+Show the resources in the Resource Group
+
+```bash
+az resource list --resource-group $resource_group
+```
+
+## Identifying Azure Virtual Machine Images
+
+Define the deployment variables used by the subsequent Azure CLI commands'
+
+```bash
+resource_group=vm-us-west2
+location=westus2
+vm_name=vm-01
+```
+
+Show all virtual machine images
+
+```bash
+az vm image list
+```
+
+Show all publishers
+
+```bash
+az vm image list-publishers -l $location --query "[?starts_with(name, 'Open')]"
+```
+
+Show all offers from OpenLogic
+
+```bash
+az vm image list-offers --location $location -p OpenLogic
+```
+
+Show all skus from OpenLogic based on CentOS'
+
+```bash
+az vm image list-skus --location $location -p OpenLogic -f CentOS
+```
+
+Show all virtual machine sizes available in a region
+
+```bash
+az vm list-sizes --location $location
+```
+
+Create a virtual machine with a specific sku
+
+```bash
+az group create --name $resource_group --location $location
+
+az network nsg create --resource-group $resource_group --name $nsg_name
+
+az network nic create \
+  --resource-group $resource_group \
+  --name $vm_name-nic1 \
+  --vnet-name $vnet_name \
+  --subnet ServerSubnet \
+  --network-security-group $nsg_name \
+  --public-ip-address ""
+  
+az vm create \
+  --resource-group $resource_group \
+  --name $vm_name \
+  --nics $vm_name-nic1 \
+  --os-disk-name $vm_name-boot.vhd \
+  --image CentOS \
+  --generate-ssh-keys
 ```
 
 ## Resize the Virtual Machine
@@ -141,7 +233,7 @@ Define the deployment variables used by the subsequent Azure CLI commands
 resource_group=vm-us-west2
 vnet_name=vnet-us-west2
 location=westus2
-vm_name=vm-02
+vm_name=vm-01
 ```
 
 Show the current virtual machine size
