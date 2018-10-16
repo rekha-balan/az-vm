@@ -2,17 +2,17 @@
 
 ## Deployment Quickstart
 
-git clone and update
+git commands
 
 ```bash
-git clone https://github.com/bot6/az-vm
+git clone https://github.com/bot6/az-vmss
 
 git fetch --all
 
 git reset --hard origin/master
 ```
 
-Allowing the deployment scripts to execute
+Linux commands
 
 ```bash
 cd az-vm
@@ -26,7 +26,7 @@ chmod +x setupvmsize.sh
 chmod +x cleanup.sh
 ```
 
-Configure the Azure CLI (set output to table)
+Azure CLI commands
 
 ```bash
 az account list
@@ -38,7 +38,7 @@ az account show
 az configure
 ```
 
-Running the deployment
+Script deployment commands
 
 ```bash
 ./setupvm.sh
@@ -48,12 +48,10 @@ Running the deployment
 ./setupvmsize.sh
 ```
 
-Delete the Azure deployment and git repo
+Cleanup commands
 
 ```bash
 ./cleanup.sh
-
-cd ..
 
 rm -rf az-vm
 ```
@@ -161,7 +159,8 @@ Show the resources in the Resource Group
 az resource list --resource-group $resource_group
 ```
 
-## Identifying Azure Virtual Machine Images
+## Identifying and Deploying a specific Azure Virtual Machine Image
+
 
 Define the deployment variables used by the subsequent Azure CLI commands'
 
