@@ -17,14 +17,14 @@ echo "location=$location"
 echo "vm_name=$vm_name"
 echo "pip_name=$pip_name"
 echo "nsg_name=$nsg_name"
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 echo
 echo
 echo 'Show all virtual machine images'
 echo
 echo 'az vm image list'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm image list
 
@@ -33,7 +33,7 @@ echo
 echo 'Show all publishers'
 echo
 echo 'az vm image list-publishers -l $location --query "[?starts_with(name, Open)]"'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm image list-publishers -l $location --query "[?starts_with(name, 'Open')]"
 
@@ -42,7 +42,7 @@ echo
 echo 'Show all offers from OpenLogic'
 echo
 echo 'az vm image list-offers --location $location -p OpenLogic'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm image list-offers --location $location -p OpenLogic
 
@@ -51,7 +51,7 @@ echo
 echo 'Show all skus from OpenLogic based on CentOS'
 echo
 echo 'az vm image list-skus --location $location -p OpenLogic -f CentOS'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm image list-skus --location $location -p OpenLogic -f CentOS
 
@@ -60,7 +60,7 @@ echo
 echo 'Show all virtual machine sizes available in a region'
 echo
 echo 'az vm list-sizes --location $location'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm list-sizes --location $location
 
@@ -85,7 +85,7 @@ echo '  --nics $vm_name-nic1 \'
 echo '  --os-disk-name $vm_name-boot.vhd \'
 echo '  --image CentOS \'
 echo '  --generate-ssh-keys'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az group create --name $resource_group --location $location
 

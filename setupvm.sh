@@ -17,14 +17,14 @@ echo "location=$location"
 echo "vm_name=$vm_name"
 echo "pip_name=$pip_name"
 echo "nsg_name=$nsg_name"
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 echo
 echo
 echo 'Create a resource group'
 echo
 echo 'az group create --name $resource_group --location $location'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az group create --name $resource_group --location $location
 
@@ -33,7 +33,7 @@ echo
 echo 'Create a virtual network'
 echo
 echo 'az network vnet create --resource-group $resource_group --name $vnet_name --subnet-name ServerSubnet'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az network vnet create --resource-group $resource_group --name $vnet_name --subnet-name ServerSubnet
 
@@ -42,7 +42,7 @@ echo
 echo 'Create a public IP address'
 echo
 echo 'az network public-ip create --resource-group $resource_group --name $pip_name'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az network public-ip create --resource-group $resource_group --name $pip_name
 
@@ -51,7 +51,7 @@ echo
 echo 'Create a network security group'
 echo
 echo 'az network nsg create --resource-group $resource_group --name $nsg_name'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az network nsg create --resource-group $resource_group --name $nsg_name
 
@@ -66,7 +66,7 @@ echo '  --vnet-name $vnet_name \'
 echo '  --subnet ServerSubnet \'
 echo '  --network-security-group $nsg_name \'
 echo '  --public-ip-address $pip_name'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az network nic create \
   --resource-group $resource_group \
@@ -75,7 +75,6 @@ az network nic create \
   --subnet ServerSubnet \
   --network-security-group $nsg_name \
   --public-ip-address $pip_name
-
 
 echo
 echo
@@ -88,7 +87,7 @@ echo '  --nics $vm_name-nic1 \'
 echo '  --os-disk-name $vm_name-boot.vhd \'
 echo '  --image CentOS \'
 echo '  --generate-ssh-keys'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm create \
   --resource-group $resource_group \
@@ -103,7 +102,7 @@ echo
 echo 'Open port 22 to allow SSH traffic to host'
 echo
 echo 'az vm open-port --port 22 --resource-group $resource_group --name $vm_name'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm open-port --port 22 --resource-group $resource_group --name $vm_name
 
@@ -118,7 +117,7 @@ echo '  --name CustomScript \'
 echo '  --vm-name $vm_name \'
 echo '  --resource-group $resource_group \'
 echo '  --settings '{"commandToExecute":"yum -y install httpd && systemctl start httpd && systemctl enable httpd"}''
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm extension set \
   --publisher Microsoft.Azure.Extensions \
@@ -139,7 +138,7 @@ echo '  --name CustomScript \'
 echo '  --vm-name $vm_name \'
 echo '  --resource-group $resource_group \'
 echo '  --settings '{"commandToExecute":"firewall-cmd --zone=public --add-port=80/tcp --permanent && firewall-cmd --reload"}''
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm extension set \
   --publisher Microsoft.Azure.Extensions \
@@ -154,7 +153,7 @@ echo
 echo 'Open port 80 to allow http traffic to host'
 echo
 echo 'az vm open-port --port 80 --resource-group $resource_group --name $vm_name --priority 901'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az vm open-port --port 80 --resource-group $resource_group --name $vm_name --priority 901
 
@@ -163,7 +162,7 @@ echo
 echo 'Show the resources in the Resource Group'
 echo
 echo 'az resource list --resource-group $resource_group'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az resource list --resource-group $resource_group
 
@@ -172,7 +171,7 @@ echo
 echo 'Get the public IP address'
 echo
 echo 'az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv'
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 az network public-ip show --name $pip_name --resource-group $resource_group --query ipAddress --output tsv
 
@@ -183,7 +182,7 @@ echo
 echo "Browse to the public IP"
 echo
 echo "http://$ip/"
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
 
 echo
 echo
@@ -191,4 +190,4 @@ echo "SSH to the public IP"
 echo
 echo "ssh $ip"
 echo "ssh <user>@$ip"
-read -n1 -r -p 'Press any key...' key
+read -n1 -r -p 'Press Enter...' key
